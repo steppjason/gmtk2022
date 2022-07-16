@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 
@@ -18,6 +19,10 @@ public class GameController : MonoBehaviour
 	public AudioController AudioController;
 	public CameraShake cameraShake;
 	public Animator textAnimator;
+
+	public GameObject gameOverScreen;
+
+	public AudioClip powerGone;
 
 	public int score;
 	public int multiplier = 1;
@@ -44,10 +49,13 @@ public class GameController : MonoBehaviour
 	public float speed2 = 1f;
 	public float speed3 = 1f;
 
+	public bool hasMulti = false;
+
 	public float extraLife = 10000;
 
 	public int powerLevel = 1;
 
+	public bool gameOver = false;
 
 	void Awake()
 	{
@@ -58,7 +66,7 @@ public class GameController : MonoBehaviour
 		}
 
 		Instance = this;
-		DontDestroyOnLoad(gameObject);
+		//DontDestroyOnLoad(gameObject);
 
 		EnemyController = GetComponent<EnemyController>();
 		AudioController = GetComponent<AudioController>();
@@ -67,6 +75,7 @@ public class GameController : MonoBehaviour
 	void Start()
 	{
 		score = 0;
+		StartCoroutine(StartEnemy());
 	}
 
 	void Update()
@@ -79,12 +88,30 @@ public class GameController : MonoBehaviour
 			dead = false;
 			StartCoroutine(Respawn());
 		}
+		else if (lives <= 0)
+			gameOver = true;
+
+		if (gameOver)
+		{
+			if(Input.GetKey(KeyCode.Escape))
+				SceneManager.LoadScene("Start Screen");
+
+			//EnemyController.enabled = false;
+			EnemyController.StopSpawn();
+
+			gameOverScreen.SetActive(true);
+		}
+
 
 		multiplierTimer -= Time.deltaTime;
 		multiFill.fillAmount = multiplierTimer / 10;
 
-		if (multiplierTimer <= 0)
+		if (multiplierTimer <= 0 && hasMulti)
+		{
+			hasMulti = false;
+			AudioController.PlaySFX(powerGone);
 			multiplier = 1;
+		}
 
 		if (lives > 6)
 			lives = 6;
@@ -95,7 +122,6 @@ public class GameController : MonoBehaviour
 				extraLives[i].gameObject.SetActive(false);
 			else
 				extraLives[i].gameObject.SetActive(true);
-
 		}
 
 		offset1 += Time.deltaTime * speed1;
@@ -127,8 +153,11 @@ public class GameController : MonoBehaviour
 		// 	ExplodeScreen();
 
 		multiplier = roll;
-		if(roll > 1)
+		if (roll > 1)
+		{
+			hasMulti = true;
 			textAnimator.Play("MultiplierScale", -1, 0f);
+		}
 
 		ResetTimer();
 	}
@@ -138,8 +167,6 @@ public class GameController : MonoBehaviour
 		multiplierTimer = 10;
 		if (multiplier == 1)
 			multiplierTimer = 0;
-
-		
 	}
 
 	IEnumerator Respawn()
@@ -149,6 +176,12 @@ public class GameController : MonoBehaviour
 
 		PlayerController.gameObject.transform.position = new Vector3(0, -1.2f, 0);
 		PlayerController.gameObject.SetActive(true);
+	}
+
+	IEnumerator StartEnemy()
+	{
+		yield return new WaitForSeconds(2);
+		EnemyController.enabled = true;
 	}
 
 	void ExplodeScreen()

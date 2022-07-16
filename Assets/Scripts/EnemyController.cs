@@ -12,9 +12,11 @@ public class EnemyController : MonoBehaviour
 	float yMax = 1.58f;
 	float yMin = -1.58f;
 
+	Coroutine spawning;
+
 	void Start()
 	{
-		StartCoroutine(SpawnEnemy());
+		spawning = StartCoroutine(SpawnEnemy());
 	}
 
 	IEnumerator SpawnEnemy()
@@ -24,5 +26,10 @@ public class EnemyController : MonoBehaviour
 			enemyPool.SetEnemyActive(new Vector3(Random.Range(xMin, xMax), Random.Range(0.5f, 2) + yMax, 0));
 			yield return new WaitForSeconds(spawnRate);
 		}
+	}
+
+	public void StopSpawn()
+	{
+		StopCoroutine(spawning);
 	}
 }

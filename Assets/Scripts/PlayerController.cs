@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
 		_animator = GetComponent<Animator>();
 		_destructible = GetComponent<Destructible>();
 		_sprite = GetComponent<SpriteRenderer>();
+
 	}
 
 	void Update()
@@ -85,18 +86,21 @@ public class PlayerController : MonoBehaviour
 
 	void GetInput()
 	{
-		if (Input.GetKey(KeyCode.A))
+		if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
 			_animator.SetInteger("Direction", -1);
-		else if (Input.GetKey(KeyCode.D))
+		else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
 			_animator.SetInteger("Direction", 1);
 		else
 			_animator.SetInteger("Direction", 0);
 
-		if (Input.GetKeyDown(KeyCode.K))
+		if (Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.Z))
 			fire = StartCoroutine(Fire());
 
-		if (Input.GetKeyUp(KeyCode.K))
-			StopCoroutine(fire);
+		if (!Input.GetKey(KeyCode.K) && !Input.GetKey(KeyCode.Z))
+		{
+			if (fire != null)
+				StopCoroutine(fire);
+		}
 
 	}
 
@@ -149,7 +153,7 @@ public class PlayerController : MonoBehaviour
 	{
 		bulletPool.SetBulletActive(new Vector3(transform.position.x - 0.06f, transform.position.y, transform.position.z), new Vector3(0, 1, 0));
 		bulletPool.SetBulletActive(new Vector3(transform.position.x + 0.06f, transform.position.y, transform.position.z), new Vector3(0, 1, 0));
-		
+
 	}
 
 	void FireTriple()

@@ -10,6 +10,9 @@ public class Enemy : MonoBehaviour
 	EnemyBulletPool _enemyBulletPool;
 	[SerializeField] PlayerController _player;
 
+	[SerializeField] AudioClip hit;
+	[SerializeField] AudioClip death;
+
 	Vector3 direction = new Vector3(0, -1, 0);
 	float speed = 1f;
 
@@ -79,6 +82,7 @@ public class Enemy : MonoBehaviour
 			{
 				sprite.material.shader = defaultShader;
 				_destructible.Kill();
+				GameController.Instance.AudioController.PlaySFX(death);
 				GameController.Instance.AddScore(100 * GameController.Instance.multiplier);
 				GameController.Instance.EnemyController.spawnRate -= 0.01f;
 
@@ -92,6 +96,7 @@ public class Enemy : MonoBehaviour
 			else
 			{
 				StartCoroutine(FlashWhite());
+				GameController.Instance.AudioController.PlaySFX(hit);
 				health--;
 			}
 		}

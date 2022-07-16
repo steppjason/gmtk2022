@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] float moveSpeed = 1f;
 	[SerializeField] BulletPool bulletPool;
 	[SerializeField] float fireRate = 0.5f;
+	[SerializeField] AudioClip fireSFX;
 
 	Animator _animator;
 	Destructible _destructible;
@@ -132,6 +133,7 @@ public class PlayerController : MonoBehaviour
 			// 		break;
 			// }
 			FireDouble();
+			GameController.Instance.AudioController.PlaySFX(fireSFX);
 			yield return new WaitForSeconds(fireRate);
 		}
 	}
@@ -145,6 +147,7 @@ public class PlayerController : MonoBehaviour
 	{
 		bulletPool.SetBulletActive(new Vector3(transform.position.x - 0.06f, transform.position.y, transform.position.z), new Vector3(0, 1, 0));
 		bulletPool.SetBulletActive(new Vector3(transform.position.x + 0.06f, transform.position.y, transform.position.z), new Vector3(0, 1, 0));
+		
 	}
 
 	void FireTriple()

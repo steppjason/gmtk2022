@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour
 	public PlayerController PlayerController;
 	public DicePool DicePool;
 	public EnemyController EnemyController;
+	public AudioController AudioController;
 
 	public int score;
 	public int multiplier = 1;
@@ -57,6 +58,7 @@ public class GameController : MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 
 		EnemyController = GetComponent<EnemyController>();
+		AudioController = GetComponent<AudioController>();
 	}
 
 	void Start()

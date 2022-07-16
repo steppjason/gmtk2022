@@ -46,18 +46,19 @@ public class PlayerController : MonoBehaviour
 	void CheckInvinsible()
 	{
 
-		if(invinsible)
+		if (invinsible)
 			countDown -= Time.deltaTime;
 
-		if(countDown <= 0){
+		if (countDown <= 0)
+		{
 			flashing = false;
 			invinsible = false;
 			flashCount = 0;
 			countDown = 5;
 		}
-		else if(countDown <= 3 && countDown > 0)
+		else if (countDown <= 3 && countDown > 0)
 			flashing = true;
-		
+
 
 		if (flashing && invinsible)
 		{
@@ -108,9 +109,36 @@ public class PlayerController : MonoBehaviour
 	{
 		while (true)
 		{
-			bulletPool.SetBulletActive(transform.position, new Vector3(0, 1, 0));
+			//bulletPool.SetBulletActive(transform.position, new Vector3(0, 1, 0));
+			FireFour();
 			yield return new WaitForSeconds(fireRate);
 		}
+	}
+
+	void FireSingle()
+	{
+		bulletPool.SetBulletActive(transform.position, new Vector3(0, 1, 0));
+	}
+
+	void FireDouble()
+	{
+		bulletPool.SetBulletActive(new Vector3(transform.position.x - 0.06f, transform.position.y, transform.position.z), new Vector3(0, 1, 0));
+		bulletPool.SetBulletActive(new Vector3(transform.position.x + 0.06f, transform.position.y, transform.position.z), new Vector3(0, 1, 0));
+	}
+
+	void FireTriple()
+	{
+		bulletPool.SetBulletActive(transform.position, new Vector3(0.5f, 1, 0));
+		bulletPool.SetBulletActive(transform.position, new Vector3(-0.5f, 1, 0));
+		bulletPool.SetBulletActive(transform.position, new Vector3(0, 1, 0));
+	}
+
+	void FireFour()
+	{
+		bulletPool.SetBulletActive(new Vector3(transform.position.x - 0.06f, transform.position.y, transform.position.z), new Vector3(0, 1, 0));
+		bulletPool.SetBulletActive(new Vector3(transform.position.x + 0.06f, transform.position.y, transform.position.z), new Vector3(0, 1, 0));
+		bulletPool.SetBulletActive(new Vector3(transform.position.x + 0.06f, transform.position.y, transform.position.z), new Vector3(0.1f, 1, 0));
+		bulletPool.SetBulletActive(new Vector3(transform.position.x - 0.06f, transform.position.y, transform.position.z), new Vector3(-0.1f, 1, 0));
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)

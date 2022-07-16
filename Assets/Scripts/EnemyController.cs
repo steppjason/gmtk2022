@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
 	[SerializeField] EnemyPool enemyPool;
-	float _spawnRate = 1f;
+	public float _spawnRate = 1f;
 
 	float xMin = -1.12f;
 	float xMax = 1.12f;

@@ -17,6 +17,8 @@ public class Bullet : MonoBehaviour
 	public void SetDirection(Vector3 direction)
 	{
 		this.direction = direction;
+		float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+		transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(new Vector3(0, 0, angle - 90)), 100);
 	}
 
 	public void SetSpeed(float speed)

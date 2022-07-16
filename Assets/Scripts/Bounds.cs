@@ -4,13 +4,5 @@ using UnityEngine;
 
 public class Bounds : MonoBehaviour 
 {
-	void Start() 
-	{
-		
-	}
 
-	void Update() 
-	{
-		
-	}
 }

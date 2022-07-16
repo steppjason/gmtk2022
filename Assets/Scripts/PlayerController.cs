@@ -9,10 +9,20 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] float fireRate = 0.5f;
 
 	Animator _animator;
+	Destructible _destructible;
+	SpriteRenderer _sprite;
 
 	Vector3 direction;
 
 	Coroutine fire;
+
+	public bool invinsible = true;
+	public float flashCount = 0;
+	public bool flipped = true;
+	public float flashSpeed = 1f;
+	public bool flashing = false;
+
+	float countDown = 5;
 
 	float xMin = -1.12f;
 	float xMax = 1.12f;
@@ -22,13 +32,51 @@ public class PlayerController : MonoBehaviour
 	void Start()
 	{
 		_animator = GetComponent<Animator>();
-
+		_destructible = GetComponent<Destructible>();
+		_sprite = GetComponent<SpriteRenderer>();
 	}
 
 	void Update()
 	{
 		GetInput();
 		Move();
+		CheckInvinsible();
+	}
+
+	void CheckInvinsible()
+	{
+
+		if(invinsible)
+			countDown -= Time.deltaTime;
+
+		if(countDown <= 0){
+			flashing = false;
+			invinsible = false;
+			flashCount = 0;
+			countDown = 5;
+		}
+		else if(countDown <= 3 && countDown > 0)
+			flashing = true;
+		
+
+		if (flashing && invinsible)
+		{
+			flashCount -= Time.deltaTime * flashSpeed;
+			if (flashCount <= 0)
+			{
+				flipped = !flipped;
+				flashCount = 1;
+			}
+
+			if (flipped)
+				_sprite.color = new Color(1, 1, 1, 0.5f);
+			else
+				_sprite.color = new Color(1, 1, 1, 1f);
+		}
+		else if (invinsible)
+			_sprite.color = new Color(1, 1, 1, 0.5f);
+		else
+			_sprite.color = new Color(1, 1, 1, 1);
 	}
 
 	void GetInput()
@@ -42,8 +90,8 @@ public class PlayerController : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.K))
 			fire = StartCoroutine(Fire());
-		
-		if(Input.GetKeyUp(KeyCode.K))
+
+		if (Input.GetKeyUp(KeyCode.K))
 			StopCoroutine(fire);
 
 	}
@@ -64,4 +112,17 @@ public class PlayerController : MonoBehaviour
 			yield return new WaitForSeconds(fireRate);
 		}
 	}
+
+	private void OnTriggerEnter2D(Collider2D other)
+	{
+		if (!invinsible && (other.gameObject.GetComponent<Enemy>() || other.gameObject.GetComponent<EnemyBullet>()))
+		{
+			GameController.Instance.lives -= 1;
+			GameController.Instance.dead = true;
+			_destructible.Kill();
+
+		}
+	}
+
+
 }

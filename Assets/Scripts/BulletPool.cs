@@ -11,7 +11,7 @@ public class BulletPool : MonoBehaviour
 	Bullet[] _bullets;
 	int _nextBullet = 0;
 
-	void Start()
+	void Awake()
 	{
 		InstantiateBullets();
 	}
@@ -52,4 +52,5 @@ public class BulletPool : MonoBehaviour
 			}
 		}
 	}
+	
 }

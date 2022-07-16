@@ -8,11 +8,6 @@ public class Bullet : MonoBehaviour
 	[SerializeField] Vector3 direction = new Vector3(0, 0, 0);
 	[SerializeField] int damage = 1;
 
-	void Start()
-	{
-
-	}
-
 	void Update()
 	{
 		if (gameObject.activeInHierarchy && speed > 0)
@@ -29,18 +24,16 @@ public class Bullet : MonoBehaviour
 		this.speed = speed;
 	}
 
+	private void OnCollisionEnter2D(Collision2D other)
+	{
+		if (other.gameObject.GetComponent<Enemy>() || other.gameObject.GetComponent<Bounds>())
+			gameObject.SetActive(false);
+	}
+
 	private void OnTriggerEnter2D(Collider2D other)
 	{
-
-		if (other.gameObject.GetComponent<Enemy>())
-		{
+		if (other.gameObject.GetComponent<Enemy>() || other.gameObject.GetComponent<Bounds>())
 			gameObject.SetActive(false);
-			other.gameObject.GetComponent<Enemy>().DoDamage(damage);
-		}
-		else if (other.gameObject.GetComponent<Bounds>())
-		{
-			gameObject.SetActive(false);
-		}
 	}
 
 }

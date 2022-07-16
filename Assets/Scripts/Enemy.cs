@@ -13,8 +13,15 @@ public class Enemy : MonoBehaviour
 	Vector3 direction = new Vector3(0, -1, 0);
 	float speed = 1f;
 
-	float _maxCounter = 0.25f;
+	public int maxHealth = 10;
+	public int health = 3;
+
+	public float _maxCounter = 0.5f;
 	float _counter;
+
+	public SpriteRenderer sprite;
+	public Shader guiText;
+	public Shader defaultShader;
 
 
 	float randomIdleStart;
@@ -26,6 +33,10 @@ public class Enemy : MonoBehaviour
 		_enemyBulletPool = FindObjectOfType<EnemyBulletPool>();
 		_animator = GetComponent<Animator>();
 		_animator.Play("Enemy", 0, Random.Range(0, _animator.GetCurrentAnimatorStateInfo(0).length));
+
+		sprite = GetComponent<SpriteRenderer>();
+		guiText = Shader.Find("GUI/Text Shader");
+		defaultShader = Shader.Find("Sprites/Default");
 	}
 
 	void Update()
@@ -64,8 +75,25 @@ public class Enemy : MonoBehaviour
 	{
 		if (other.gameObject.GetComponent<Bullet>())
 		{
-			_destructible.Kill();
-			GameController.Instance.AddScore(100);
+			if (health <= 0)
+			{
+				sprite.material.shader = defaultShader;
+				_destructible.Kill();
+				GameController.Instance.AddScore(100 * GameController.Instance.multiplier);
+				GameController.Instance.EnemyController.spawnRate -= 0.01f;
+
+				if (GameController.Instance.EnemyController.spawnRate < 0.4f)
+					GameController.Instance.EnemyController.spawnRate = 0.4f;
+
+				int chance = Random.Range(0, 5);
+				if (chance == 1)
+					GameController.Instance.DicePool.SetDiceActive(transform.position);
+			}
+			else
+			{
+				StartCoroutine(FlashWhite());
+				health--;
+			}
 		}
 
 		if (other.gameObject.GetComponent<PlayerController>() && !other.gameObject.GetComponent<PlayerController>().invinsible)
@@ -76,4 +104,13 @@ public class Enemy : MonoBehaviour
 		if (other.gameObject.GetComponent<BoundsEnemy>())
 			gameObject.SetActive(false);
 	}
+
+
+	IEnumerator FlashWhite()
+	{
+		sprite.material.shader = guiText;
+		yield return new WaitForSeconds(0.1f);
+		sprite.material.shader = defaultShader;
+	}
+
 }

@@ -13,14 +13,20 @@ public class GameController : MonoBehaviour
 	public static GameController Instance { get; private set; }
 
 	public PlayerController PlayerController;
-	EnemyController EnemyController;
+	public DicePool DicePool;
+	public EnemyController EnemyController;
 
 	public int score;
+	public int multiplier = 1;
+	public float multiplierTimer = 0;
 	public int lives = 3;
 	public bool dead = false;
 	public TMP_Text scoreBoard;
+	public TMP_Text multiplierText;
 
 	public Image[] extraLives;
+
+	public Image multiFill;
 
 	public Image backgroundLayer1;
 	public Image backgroundLayer2;
@@ -33,6 +39,10 @@ public class GameController : MonoBehaviour
 	public float speed1 = 1f;
 	public float speed2 = 1f;
 	public float speed3 = 1f;
+
+	public float extraLife = 10000;
+
+	public int powerLevel = 1;
 
 
 	void Awake()
@@ -57,12 +67,19 @@ public class GameController : MonoBehaviour
 	void Update()
 	{
 		scoreBoard.text = score.ToString("n0", new NumberFormatInfo { NumberGroupSeparator = " " });
+		multiplierText.text = multiplier.ToString();
 
 		if (dead && lives > 0)
 		{
 			dead = false;
 			StartCoroutine(Respawn());
 		}
+
+		multiplierTimer -= Time.deltaTime;
+		multiFill.fillAmount = multiplierTimer / 10;
+
+		if (multiplierTimer <= 0)
+			multiplier = 1;
 
 		if (lives > 6)
 			lives = 6;
@@ -90,13 +107,29 @@ public class GameController : MonoBehaviour
 	{
 		score += value;
 
-		if (score % 10000 == 0)
+		if (score > extraLife)
+		{
+			extraLife *= 1.5f;
 			lives++;
+		}
 	}
 
 	public void DoPower(int roll)
 	{
-		
+		// if (roll < 6)
+		// 	powerLevel = roll;
+		// else
+		// 	ExplodeScreen();
+
+		multiplier = roll;
+		ResetTimer();
+	}
+
+	void ResetTimer()
+	{
+		multiplierTimer = 10;
+		if (multiplier == 1)
+			multiplierTimer = 0;
 	}
 
 	IEnumerator Respawn()
@@ -106,5 +139,10 @@ public class GameController : MonoBehaviour
 
 		PlayerController.gameObject.transform.position = new Vector3(0, -1.2f, 0);
 		PlayerController.gameObject.SetActive(true);
+	}
+
+	void ExplodeScreen()
+	{
+
 	}
 }

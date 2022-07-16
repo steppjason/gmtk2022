@@ -12,10 +12,10 @@ public class DicePool : MonoBehaviour
 
 	void Awake()
 	{
-		InstantiateEnemys();
+		InstantiateDice();
 	}
 
-	void InstantiateEnemys()
+	void InstantiateDice()
 	{
 		_dice = new Dice[numberOfDice];
 		for (int i = 0; i < numberOfDice; i++)
@@ -26,12 +26,13 @@ public class DicePool : MonoBehaviour
 		}
 	}
 
-	public void SetEnemyActive(Vector3 position)
+	public void SetDiceActive(Vector3 position)
 	{
 		GetAvailable();
 		Dice newDie = _dice[_next];
 		newDie.transform.position = position;
 		newDie.gameObject.SetActive(true);
+		newDie.Spawn();
 	}
 
 	void GetAvailable()

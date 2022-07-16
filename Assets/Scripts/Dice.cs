@@ -5,7 +5,7 @@ using UnityEngine;
 public class Dice : MonoBehaviour
 {
 
-	public float speed = 0.5f;
+	public float speed = 0.25f;
 	public float rotationSpeed = 50f;
 	public Vector3 direction = new Vector3(0, -1, 0);
 	public float rollTime = 0.5f;
@@ -45,12 +45,17 @@ public class Dice : MonoBehaviour
 		}
 	}
 
+	public void Spawn()
+	{
+		StartCoroutine(RollDice());
+	}
+
 	IEnumerator RollDice()
 	{
 		while (true)
 		{
 			roll++;
-			if(roll > 6)
+			if (roll > 6)
 				roll = 1;
 			yield return new WaitForSeconds(rollTime);
 		}

@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
 	[SerializeField] EnemyPool enemyPool;
-	public float _spawnRate = 1f;
+	public float spawnRate = 1f;
 
 	float xMin = -1.12f;
 	float xMax = 1.12f;
@@ -22,7 +22,7 @@ public class EnemyController : MonoBehaviour
 		while (true)
 		{
 			enemyPool.SetEnemyActive(new Vector3(Random.Range(xMin, xMax), Random.Range(0.5f, 2) + yMax, 0));
-			yield return new WaitForSeconds(_spawnRate);
+			yield return new WaitForSeconds(spawnRate);
 		}
 	}
 }

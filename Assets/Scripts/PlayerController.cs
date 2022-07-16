@@ -110,7 +110,28 @@ public class PlayerController : MonoBehaviour
 		while (true)
 		{
 			//bulletPool.SetBulletActive(transform.position, new Vector3(0, 1, 0));
-			FireFour();
+			// switch (GameController.Instance.powerLevel)
+			// {
+			// 	case 1:
+			// 		FireSingle();
+			// 		break;
+			// 	case 2:
+			// 		FireDouble();
+			// 		break;
+			// 	case 3:
+			// 		FireTriple();
+			// 		break;
+			// 	case 4:
+			// 		FireFour();
+			// 		break;
+			// 	case 5:
+			// 		FireFive();
+			// 		break;
+			// 	default:
+			// 		FireSingle();
+			// 		break;
+			// }
+			FireDouble();
 			yield return new WaitForSeconds(fireRate);
 		}
 	}
@@ -137,6 +158,15 @@ public class PlayerController : MonoBehaviour
 	{
 		bulletPool.SetBulletActive(new Vector3(transform.position.x - 0.06f, transform.position.y, transform.position.z), new Vector3(0, 1, 0));
 		bulletPool.SetBulletActive(new Vector3(transform.position.x + 0.06f, transform.position.y, transform.position.z), new Vector3(0, 1, 0));
+		bulletPool.SetBulletActive(new Vector3(transform.position.x + 0.06f, transform.position.y, transform.position.z), new Vector3(0.1f, 1, 0));
+		bulletPool.SetBulletActive(new Vector3(transform.position.x - 0.06f, transform.position.y, transform.position.z), new Vector3(-0.1f, 1, 0));
+	}
+
+	void FireFive()
+	{
+		bulletPool.SetBulletActive(transform.position, new Vector3(0.5f, 1, 0));
+		bulletPool.SetBulletActive(transform.position, new Vector3(-0.5f, 1, 0));
+		bulletPool.SetBulletActive(transform.position, new Vector3(0, 1, 0));
 		bulletPool.SetBulletActive(new Vector3(transform.position.x + 0.06f, transform.position.y, transform.position.z), new Vector3(0.1f, 1, 0));
 		bulletPool.SetBulletActive(new Vector3(transform.position.x - 0.06f, transform.position.y, transform.position.z), new Vector3(-0.1f, 1, 0));
 	}

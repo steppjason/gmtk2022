@@ -32,6 +32,7 @@ public class EnemyPool : MonoBehaviour
 		GetAvailable();
 		Enemy newEnemy = _enemies[_next];
 		newEnemy.transform.position = position;
+		newEnemy.health = newEnemy.maxHealth;
 		newEnemy.gameObject.SetActive(true);
 	}
 

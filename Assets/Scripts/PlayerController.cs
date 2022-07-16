@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] BulletPool bulletPool;
 	[SerializeField] float fireRate = 0.5f;
 	[SerializeField] AudioClip fireSFX;
+	[SerializeField] AudioClip deathSFX;
+
 
 	Animator _animator;
 	Destructible _destructible;
@@ -181,7 +183,7 @@ public class PlayerController : MonoBehaviour
 			GameController.Instance.lives -= 1;
 			GameController.Instance.dead = true;
 			_destructible.Kill();
-
+			GameController.Instance.AudioController.PlaySFX(deathSFX);
 		}
 	}
 

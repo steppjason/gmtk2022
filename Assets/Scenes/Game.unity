@@ -1134,7 +1134,8 @@ MonoBehaviour:
   moveSpeed: 1.5
   bulletPool: {fileID: 1163475881}
   fireRate: 0.1
-  fireSFX: {fileID: 8300000, guid: 9ab18f34691651c4bacb34c6d7ceb6b7, type: 3}
+  fireSFX: {fileID: 8300000, guid: 7602a468f25d0704c8fc215dbb656c27, type: 3}
+  deathSFX: {fileID: 8300000, guid: 86bb5fcec23edc446a497e7c5e20d1bd, type: 3}
   invinsible: 0
   flashCount: 0
   flipped: 1
@@ -1635,7 +1636,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _music: {fileID: 1573731419}
   _sfx: {fileID: 177810826}
-  masterVolume: 0.234
+  masterVolume: 1
   musicVolume: 1
   sfxVolume: 1
 --- !u!1 &840868594
@@ -3256,7 +3257,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 477024678}
   hit: {fileID: 8300000, guid: 99743f5cd196aa64587abf478d51bc5c, type: 3}
-  death: {fileID: 8300000, guid: e5cdee10ab0e1c94299cd4eb4f3ff447, type: 3}
+  death: {fileID: 8300000, guid: e0aab404aea8dda43acce9bf878dec17, type: 3}
   maxHealth: 5
   health: 5
   _maxCounter: 0.5
@@ -3328,6 +3329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c22f749875b08f24694eb9b022957e1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pickupSFX: {fileID: 8300000, guid: a3e27f27d295f204c957c1401c31489e, type: 3}
   speed: 0.25
   rotationSpeed: -200
   direction: {x: 0, y: -1, z: 0}

@@ -184,6 +184,7 @@ public class PlayerController : MonoBehaviour
 			GameController.Instance.dead = true;
 			_destructible.Kill();
 			GameController.Instance.AudioController.PlaySFX(deathSFX);
+			GameController.Instance.cameraShake.ShakeCamera(3f, 0.2f);
 		}
 	}
 

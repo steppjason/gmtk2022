@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Dice : MonoBehaviour
 {
 
 	[SerializeField] AudioClip pickupSFX;
+	
 	public float speed = 0.25f;
 	public float rotationSpeed = 50f;
 	public Vector3 direction = new Vector3(0, -1, 0);

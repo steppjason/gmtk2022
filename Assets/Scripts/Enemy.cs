@@ -82,6 +82,8 @@ public class Enemy : MonoBehaviour
 			{
 				sprite.material.shader = defaultShader;
 				_destructible.Kill();
+
+				GameController.Instance.cameraShake.ShakeCamera(1.5f, 0.1f);
 				GameController.Instance.AudioController.PlaySFX(death);
 				GameController.Instance.AddScore(100 * GameController.Instance.multiplier);
 				GameController.Instance.EnemyController.spawnRate -= 0.01f;

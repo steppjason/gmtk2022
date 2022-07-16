@@ -16,6 +16,8 @@ public class GameController : MonoBehaviour
 	public DicePool DicePool;
 	public EnemyController EnemyController;
 	public AudioController AudioController;
+	public CameraShake cameraShake;
+	public Animator textAnimator;
 
 	public int score;
 	public int multiplier = 1;
@@ -24,6 +26,7 @@ public class GameController : MonoBehaviour
 	public bool dead = false;
 	public TMP_Text scoreBoard;
 	public TMP_Text multiplierText;
+	public TMP_Text multiplierX;
 
 	public Image[] extraLives;
 
@@ -124,6 +127,9 @@ public class GameController : MonoBehaviour
 		// 	ExplodeScreen();
 
 		multiplier = roll;
+		if(roll > 1)
+			textAnimator.Play("MultiplierScale", -1, 0f);
+
 		ResetTimer();
 	}
 
@@ -132,6 +138,8 @@ public class GameController : MonoBehaviour
 		multiplierTimer = 10;
 		if (multiplier == 1)
 			multiplierTimer = 0;
+
+		
 	}
 
 	IEnumerator Respawn()

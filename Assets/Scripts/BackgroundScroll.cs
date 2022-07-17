@@ -5,26 +5,26 @@ using UnityEngine.UI;
 
 public class BackgroundScroll : MonoBehaviour
 {
-	public Image backgroundLayer1;
-	public Image backgroundLayer2;
-	public Image backgroundLayer3;
 
-	float offset1 = 0f;
-	float offset2 = 0f;
-	float offset3 = 0f;
+	public float scrollSpeed;
 
-	public float speed1 = 1f;
-	public float speed2 = 1f;
-	public float speed3 = 1f;
+	Transform cameraTransform;
+	Vector3 lastCameraPosition;
+	float textureUnitSizeY;
+
+	void Start()
+	{
+		cameraTransform = Camera.main.transform;
+		lastCameraPosition = cameraTransform.position;
+		Sprite sprite = GetComponent<SpriteRenderer>().sprite;
+		Texture2D texture = sprite.texture;
+		textureUnitSizeY = texture.height / sprite.pixelsPerUnit;
+	}
 
 	void Update()
 	{
-		offset1 += Time.deltaTime * speed1;
-		offset2 += Time.deltaTime * speed2;
-		offset3 += Time.deltaTime * speed3;
-
-		backgroundLayer1.material.SetTextureOffset("_MainTex", new Vector2(1.25f, offset1));
-		backgroundLayer2.material.SetTextureOffset("_MainTex", new Vector2(0.5f, offset2));
-		backgroundLayer3.material.SetTextureOffset("_MainTex", new Vector2(-2f, offset3));
+		transform.position += new Vector3(0, scrollSpeed * Time.deltaTime, 0);
+		if(transform.position.y <= -textureUnitSizeY)
+			transform.position = new Vector3(0, 0, 0);
 	}
 }
